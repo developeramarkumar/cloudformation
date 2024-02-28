@@ -21,6 +21,5 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy CloudFormation
-        uses: mgenteluci/cloudformation-deploy-action@v1.4.1
-        with:
-          template: ${{ env.GITHUB_WORKSPACE }}/template.yml
+        run: |
+          aws cloudformation deploy --template-file ${{ env.GITHUB_WORKSPACE }}/aws-lambda.yaml --stack-name MyStackName --region us-east-1 --capabilities CAPABILITY_IAM
