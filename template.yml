@@ -38,3 +38,26 @@ Resources:
             body: JSON.stringify("Hello  from Lambda!"),
           };
         };
+  MyApi:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: MyApi
+
+  MyResource:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref MyApi
+      ParentId: !GetAtt MyApi.RootResourceId
+      PathPart: 'myresource'
+
+  MyMethod:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: POST
+      ResourceId: !GetAtt MyResource.Id
+      RestApiId: !Ref MyApi
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyFunction.Arn}/invocations
