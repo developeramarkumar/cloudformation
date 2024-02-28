@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Lambda function  ListBucketsCommand.
+Description: Lambda function   ListBucketsCommand.
 Resources:
   iamRole:
     Type: AWS::IAM::Role
