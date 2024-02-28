@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Lambda function   ListBucketsCommand.
+Description: Lambda function ListBucketsCommand.
 Resources:
-  iamRole:
+  IAMRole:
     Type: AWS::IAM::Role
     Properties:
-      Path:
-       AssumeRolePolicyDocument:
+      Path: "/"
+      AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
           - Effect: Allow
@@ -21,12 +21,14 @@ Resources:
               - Effect: "Allow"
                 Action: "*"
                 Resource: "*"
+
   MyFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
       Runtime: nodejs14.x
       FunctionName: MyLambdaFunction
       Timeout: 10
+      Role: !GetAtt IAMRole.Arn
       InlineCode: |
         exports.handler = async function(event) {
           return {
