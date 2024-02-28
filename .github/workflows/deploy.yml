@@ -22,6 +22,6 @@ jobs:
 
       - name: Deploy CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1
-        env:
+        with:
           name: my1stack
           template: template.yml
