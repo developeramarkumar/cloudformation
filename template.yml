@@ -31,8 +31,7 @@ Resources:
       Timeout: 10
       Role: !GetAtt IAMRole.Arn
       Handler: index.handler
-      Code:
-        ZipFile: |
+      InlineCode: |
           exports.handler = async function(event) {
             return {
               statusCode: 200,
