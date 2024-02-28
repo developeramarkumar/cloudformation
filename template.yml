@@ -32,9 +32,9 @@ Resources:
       Role: !GetAtt IAMRole.Arn
       Handler: index.handler
       InlineCode: |
-          exports.handler = async function(event) {
-            return {
-              statusCode: 200,
-              body: JSON.stringify("Hello  from Lambda!"),
-            };
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify("Hello  from Lambda!"),
           };
+        };
