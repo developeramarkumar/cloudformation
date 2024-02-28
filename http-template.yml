@@ -67,3 +67,14 @@ Resources:
       StageName: $default
       ApiId: !Ref HttpApi
       AutoDeploy: true
+  Outputs:
+  ApiUrl:
+    Description: URL of the HTTP API.
+    Value: 
+      !Join
+      - ''
+      - - !Ref HttpApi
+        - .execute-api.
+        - !Ref AWS::Region
+        - .
+        - !Ref AWS::URLSuffix
