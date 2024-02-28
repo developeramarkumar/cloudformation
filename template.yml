@@ -12,7 +12,7 @@ Resources:
           - Effect: Allow
             Principal:
               Service: 
-                - lambda.amazonaws.com
+                - cloudformation.amazonaws.com
             Action: sts:AssumeRole
       Policies:
         - PolicyName: "root"
