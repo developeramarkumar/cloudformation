@@ -35,6 +35,6 @@ Resources:
         exports.handler = async function(event) {
           return {
             statusCode: 200,
-            body: JSON.stringify("Hello  from Lamb  da!"),
+            body: JSON.stringify("Hello  fro m Lamb  da!"),
           };
         };
