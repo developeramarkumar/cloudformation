@@ -11,7 +11,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Service: 
+              Service:
                 - lambda.amazonaws.com
             Action: sts:AssumeRole
       Policies:
@@ -23,8 +23,8 @@ Resources:
                 Action: "*"
                 Resource: "*"
 
-  MyFunction:
-    Type: 'AWS::Serverless::Function'
+  MyRestFunction:
+    Type: "AWS::Serverless::Function"
     Properties:
       Runtime: nodejs20.x
       FunctionName: MyLambdaFunctionHttp
@@ -48,16 +48,15 @@ Resources:
     Properties:
       ApiId: !Ref HttpApi
       IntegrationType: AWS_PROXY
-      IntegrationUri: !GetAtt MyFunction.Arn
-      PayloadFormatVersion: '2.0'
+      IntegrationUri: !GetAtt MyRestFunction.Arn
+      PayloadFormatVersion: "2.0"
   HttpApiRoute:
     Type: AWS::ApiGatewayV2::Route
     DependsOn: HttpApiIntegration
     Properties:
       RouteKey: $default
       ApiId: !Ref HttpApi
-      Target:
-        !Join
+      Target: !Join
         - /
         - - integrations
           - !Ref HttpApiIntegration
@@ -70,9 +69,8 @@ Resources:
 Outputs:
   ApiUrl:
     Description: URL of the HTTP API.
-    Value: 
-      !Join
-      - ''
+    Value: !Join
+      - ""
       - - !Ref HttpApi
         - .execute-api.
         - !Ref AWS::Region

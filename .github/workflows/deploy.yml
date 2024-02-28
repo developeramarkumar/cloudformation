@@ -23,13 +23,13 @@ jobs:
       - name: Deploy CloudFormation http-template.yml
         run: |
           aws cloudformation deploy \
-            --stack-name YourStackName \
+            --stack-name HttpLambdaStack \
             --template-file http-template.yml \
             --capabilities CAPABILITY_IAM
 
       - name: Deploy CloudFormation rest-template.yml
         run: |
           aws cloudformation deploy \
-            --stack-name YourStackName \
+            --stack-name RestLambdaStack \
             --template-file rest-template.yml \
             --capabilities CAPABILITY_IAM
