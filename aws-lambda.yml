@@ -21,22 +21,19 @@ Resources:
               - Effect: "Allow"
                 Action: "*"
                 Resource: "*"
-  lambdaFunction:
-    Type: AWS::Lambda::Function
+  MyFunction:
+    Type: 'AWS::Serverless::Function'
     Properties:
-      Description:
-      FunctionName:
-      Handler:
-      KmsKeyArn:
-      MemorySize: 128
-      Role: role-arn
-      Runtime: nodejs18.x
-      Timeout:
-      Code:
-        ZipFile: |
-          exports.handler = async function(event) {
-            return JSON.stringify({test:'data'})
+      Runtime: nodejs14.x
+      FunctionName: MyLambdaFunction
+      Timeout: 10
+      InlineCode: |
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify("Hello from Lambda!"),
           };
+        };
       Tags:
         - Key: keyname
           Value: value
