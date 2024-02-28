@@ -15,7 +15,7 @@ jobs:
 
       - uses: mgenteluci/cloudformation-deploy-action@v1.4.1
         env:
-          TEMPLATE: 'aws-lambda.yml'
+          TEMPLATE: '../aws-lambda.yml'
           AWS_STACK_NAME: 'my-stack'
           AWS_REGION: 'us-east-1'
           AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
