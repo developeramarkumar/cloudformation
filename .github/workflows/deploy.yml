@@ -24,4 +24,4 @@ jobs:
         uses: mgenteluci/cloudformation-deploy-action@v1.4.1
         with:
           name: my-stack
-          template: aws-lambda.yml
+          template: template.yml
