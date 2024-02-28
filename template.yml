@@ -23,7 +23,7 @@ Resources:
                 Action: "*"
                 Resource: "*"
 
-  MyFunction:
+  LambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
       Runtime: nodejs14.x
