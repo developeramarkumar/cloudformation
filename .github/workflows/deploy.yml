@@ -22,4 +22,4 @@ jobs:
 
       - name: Deploy CloudFormation
         run: |
-          aws cloudformation deploy --template-file ${{ env.GITHUB_WORKSPACE }}/template.yaml --stack-name MyStackName --region us-east-1 --capabilities CAPABILITY_IAM
+          aws cloudformation deploy --template-file template.yaml --stack-name MyStackName --region us-east-1 --capabilities CAPABILITY_IAM
