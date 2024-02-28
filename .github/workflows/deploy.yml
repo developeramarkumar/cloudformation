@@ -23,5 +23,4 @@ jobs:
       - name: Deploy CloudFormation
         uses: mgenteluci/cloudformation-deploy-action@v1.4.1
         with:
-          name: myStack
           template: ${{ env.GITHUB_WORKSPACE }}/template.yml
