@@ -30,6 +30,7 @@ Resources:
       FunctionName: MyLambdaFunction
       Timeout: 10
       Role: !GetAtt IAMRole.Arn
+      Handler: index.handler
       Code:
         ZipFile: |
           exports.handler = async function(event) {
