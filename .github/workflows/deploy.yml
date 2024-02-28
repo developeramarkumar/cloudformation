@@ -21,5 +21,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy CloudFormation
-        run: |
-          aws cloudformation deploy --template-file template.yaml --stack-name MyStackName --region us-east-1 --capabilities CAPABILITY_IAM
+        uses: mgenteluci/cloudformation-deploy-action@v1.4.1
+        with:
+          name: my1stack
+          template: ${{ env.GITHUB_WORKSPACE }}/template.yml
