@@ -21,10 +21,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy CloudFormation
-        uses: mgenteluci/cloudformation-deploy-action@v1.4.1
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
         env:
-          AWS_STACK_NAME: my1stack
-          AWS_REGION: 'us-east-1'
-          TEMPLATE: template.yml
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          name: my1stack
+          template: template.yml
