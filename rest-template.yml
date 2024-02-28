@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Lambda function ListBucketsCommand.
+Resources:
+  IAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: "root"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+
+  MyFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Runtime: nodejs20.x
+      FunctionName: MyLambdaFunctionRest
+      Timeout: 10
+      Role: !GetAtt IAMRole.Arn
+      Handler: index.handler
+      InlineCode: |
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify("Hello  from Lambda!"),
+          };
+        };
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: my-example-api
+      ProtocolType: HTTP
+  HttpApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt MyFunction.Arn
+      PayloadFormatVersion: '2.0'
+  HttpApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    DependsOn: HttpApiIntegration
+    Properties:
+      RouteKey: $default
+      ApiId: !Ref HttpApi
+      Target:
+        !Join
+        - /
+        - - integrations
+          - !Ref HttpApiIntegration
+  HttpApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: $default
+      ApiId: !Ref HttpApi
+      AutoDeploy: true
+Outputs:
+  ApiUrl:
+    Description: URL of the HTTP API.
+    Value: 
+      !Join
+      - ''
+      - - !Ref HttpApi
+        - .execute-api.
+        - !Ref AWS::Region
+        - .
+        - !Ref AWS::URLSuffix
