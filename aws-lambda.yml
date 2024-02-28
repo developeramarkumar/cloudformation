@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Lambda function ListBucketsCommand.
+Resources:
+  iamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path:
+       AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: "root"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: "*"
+                Resource: "*"
+  lambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Description:
+      FunctionName:
+      Handler:
+      KmsKeyArn:
+      MemorySize: 128
+      Role: role-arn
+      Runtime: nodejs18.x
+      Timeout:
+      Code:
+        ZipFile: |
+          exports.handler = async function(event) {
+            return JSON.stringify({test:'data'})
+          };
+      Tags:
+        - Key: keyname
+          Value: value
