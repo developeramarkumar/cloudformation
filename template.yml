@@ -23,21 +23,17 @@ Resources:
                 Action: "*"
                 Resource: "*"
 
-  MyFunction:
+  MyLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
       Runtime: nodejs14.x
       FunctionName: MyLambdaFunction
-      Timeout: 10
+      Timeout: 100
       Role: !GetAtt IAMRole.Arn
-      Code:
-        ZipFile: |
-          exports.handler = async function(event) {
-            return {
-              statusCode: 200,
-              body: JSON.stringify("Hello from Lambda!"),
-            };
+      InlineCode: |
+        exports.handler = async function(event) {
+          return {
+            statusCode: 200,
+            body: JSON.stringify("Hello from Lambda!"),
           };
-      Tags:
-        - Key: keyname
-          Value: value
+        };
