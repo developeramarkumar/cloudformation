@@ -27,4 +27,3 @@ jobs:
           template: template.yml
           no-fail-on-empty-changeset: "1"
           capabilities: CAPABILITY_IAM
-          disable-rollback: 1
