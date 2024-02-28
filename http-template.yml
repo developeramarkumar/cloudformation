@@ -67,7 +67,7 @@ Resources:
       StageName: $default
       ApiId: !Ref HttpApi
       AutoDeploy: true
-  Outputs:
+Outputs:
   ApiUrl:
     Description: URL of the HTTP API.
     Value: 
