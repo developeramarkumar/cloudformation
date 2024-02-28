@@ -13,13 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-
-      - name: Deploy CloudFormation
-        run: |
-          aws cloudformation deploy --template-file aws-lambda.yaml --stack-name MyStackName --region us-east-1 --capabilities CAPABILITY_IAM
+      - uses: mgenteluci/cloudformation-deploy-action@v1.4.1
+        env:
+          TEMPLATE: 'template.yml'
+          AWS_STACK_NAME: 'my-stack'
+          AWS_REGION: 'us-east-1'
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
