@@ -23,5 +23,6 @@ jobs:
       - name: Deploy CloudFormation
         uses: mgenteluci/cloudformation-deploy-action@v1.4.1
         env:
-          name: my1stack
-          template: template.yml
+          AWS_STACK_NAME: my1stack
+          AWS_REGION: 'us-east-1'
+          TEMPLATE: template.yml
