@@ -38,26 +38,32 @@ Resources:
             body: JSON.stringify("Hello  from Lambda!"),
           };
         };
-  MyApi:
-    Type: 'AWS::ApiGateway::RestApi'
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
     Properties:
-      Name: MyApi
-
-  MyResource:
-    Type: 'AWS::ApiGateway::Resource'
+      Name: my-example-api
+      ProtocolType: HTTP
+  HttpApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
     Properties:
-      RestApiId: !Ref MyApi
-      ParentId: !GetAtt MyApi.RootResourceId
-      PathPart: 'myresource'
-
-  MyMethod:
-    Type: 'AWS::ApiGateway::Method'
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt HandlerLambdaFunction.Arn
+      PayloadFormatVersion: '2.0'
+  HttpApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    DependsOn: HttpApiIntegration
     Properties:
-      AuthorizationType: NONE
-      HttpMethod: POST
-      ResourceId: !GetAtt MyResource.Id
-      RestApiId: !Ref MyApi
-      Integration:
-        IntegrationHttpMethod: POST
-        Type: AWS_PROXY
-        Uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyFunction.Arn}/invocations
+      RouteKey: $default
+      ApiId: !Ref HttpApi
+      Target:
+        !Join
+        - /
+        - - integrations
+          - !Ref HttpApiIntegration
+  HttpApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      StageName: $default
+      ApiId: !Ref HttpApi
+      AutoDeploy: true
