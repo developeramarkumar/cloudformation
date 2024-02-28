@@ -30,13 +30,14 @@ Resources:
       FunctionName: MyLambdaFunction
       Timeout: 10
       Role: !GetAtt IAMRole.Arn
-      InlineCode: |
-        exports.handler = async function(event) {
-          return {
-            statusCode: 200,
-            body: JSON.stringify("Hello from Lambda!"),
+      Code:
+        ZipFile: |
+          exports.handler = async function(event) {
+            return {
+              statusCode: 200,
+              body: JSON.stringify("Hello from Lambda!"),
+            };
           };
-        };
       Tags:
         - Key: keyname
           Value: value
