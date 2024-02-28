@@ -48,7 +48,7 @@ Resources:
     Properties:
       ApiId: !Ref HttpApi
       IntegrationType: AWS_PROXY
-      IntegrationUri: !GetAtt HandlerLambdaFunction.Arn
+      IntegrationUri: !GetAtt MyFunction.Arn
       PayloadFormatVersion: '2.0'
   HttpApiRoute:
     Type: AWS::ApiGatewayV2::Route
