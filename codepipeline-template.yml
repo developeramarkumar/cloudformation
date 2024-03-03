@@ -5,40 +5,49 @@ Parameters:
     Default: /GitHub/AccessToken
 
 Resources:
-  MyCodePipeline:
-    Type: AWS::CodePipeline::Pipeline
+  YourCodePipelineRole:
+    Type: "AWS::IAM::Role"
     Properties:
-      Name: MyCodePipeline
-      RoleArn: <IAM Role ARN for CodePipeline>
-      Stages:
-        - Name: Source
-          Actions:
-            - Name: SourceAction
-              ActionTypeId:
-                Category: Source
-                Owner: ThirdParty
-                Provider: GitHub
-                Version: 1
-              Configuration:
-                Owner: <GitHub repo owner>
-                Repo: <GitHub repo name>
-                Branch: main
-                OAuthToken: !Ref GitHubToken
-              OutputArtifacts:
-                - Name: SourceOutput
-        - Name: Deploy
-          Actions:
-            - Name: DeployAction
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: CloudFormation
-                Version: 1
-              Configuration:
-                StackName: MyStack
-                ActionMode: CREATE_UPDATE
-                RoleArn: <IAM Role ARN for CloudFormation>
-                TemplatePath: SourceOutput::deploy.yml
-                Capabilities: CAPABILITY_IAM
-              InputArtifacts:
-                - Name: SourceOutput
+      RoleName: YourCodePipelineRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "codepipeline.amazonaws.com"
+            Action: "sts:AssumeRole"
+
+  YourCodePipelinePolicy:
+    Type: "AWS::IAM::ManagedPolicy"
+    Properties:
+      PolicyName: YourCodePipelinePolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - "codepipeline:StartPipelineExecution"
+              - "codepipeline:GetPipelineState"
+              - "codepipeline:GetPipeline"
+            Resource: "arn:aws:codepipeline:REGION:ACCOUNT_ID:your-pipeline-name"
+
+          - Effect: "Allow"
+            Action:
+              - "s3:GetObject"
+              - "s3:GetObjectVersion"
+              - "s3:PutObject"
+            Resource:
+              - "arn:aws:s3:::your-source-bucket/*"
+              - "arn:aws:s3:::your-artifact-bucket/*"
+
+          - Effect: "Allow"
+            Action:
+              - "cloudformation:CreateChangeSet"
+              - "cloudformation:ExecuteChangeSet"
+              - "cloudformation:GetChangeSet"
+              - "cloudformation:DescribeChangeSet"
+              - "cloudformation:DescribeStacks"
+              - "cloudformation:DescribeStackEvents"
+              - "cloudformation:CreateStack"
+              - "cloudformation:UpdateStack"
+            Resource: "arn:aws:cloudformation:REGION:ACCOUNT_ID:stack/your-stack-name/*"
