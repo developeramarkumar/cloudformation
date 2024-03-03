@@ -38,4 +38,4 @@ jobs:
           aws cloudformation deploy \
             --stack-name MyCodePipelineStack \
             --template-file codepipeline-template.yml \
-            --capabilities CAPABILITY_IAM
+            --capabilities CAPABILITY_NAMED_IAM
