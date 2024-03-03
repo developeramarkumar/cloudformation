@@ -38,5 +38,4 @@ jobs:
           aws cloudformation deploy \
             --stack-name MyCodePipelineStack \
             --template-file codepipeline-template.yml \
-            --parameters ParameterKey=GitHubToken,ParameterValue=<GitHubToken> \
             --capabilities CAPABILITY_IAM

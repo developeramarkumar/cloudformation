@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   GitHubToken:
-    Type: String
-    Description: "GitHub personal access token "
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /GitHub/AccessToken
 
 Resources:
   MyCodePipeline:
