@@ -31,8 +31,8 @@ Resources:
                 Provider: GitHub
                 Version: 1
               Configuration:
-                Owner: <GitHub repo owner>
-                Repo: <GitHub repo name>
+                Owner: developeramarkumar
+                Repo: cloudformation
                 Branch: main
                 OAuthToken: !Ref GitHubToken
               OutputArtifacts:
