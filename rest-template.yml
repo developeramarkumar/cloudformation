@@ -23,7 +23,7 @@ Resources:
                 Action: "*"
                 Resource: "*"
 
-  MyHttpFunction:
+  MyRestFunction:
     Type: "AWS::Serverless::Function"
     Properties:
       Runtime: nodejs20.x
@@ -64,7 +64,7 @@ Resources:
   HelloWorldApiGatewayMethod:
     Type: AWS::ApiGateway::Method
     DependsOn:
-      - MyHttpFunctionApiGatewayPermission
+      - MyRestFunctionApiGatewayPermission
     Properties:
       ApiKeyRequired: false
       AuthorizationType: NONE
@@ -79,15 +79,15 @@ Resources:
             - ":apigateway:"
             - !Ref AWS::Region
             - :lambda:path/2015-03-31/functions/
-            - !GetAtt MyHttpFunction.Arn
+            - !GetAtt MyRestFunction.Arn
             - /invocations
       ResourceId: !Ref OstroJSApiGatewayResource
       RestApiId: !Ref RestApi
-  MyHttpFunctionApiGatewayPermission:
+  MyRestFunctionApiGatewayPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !GetAtt MyHttpFunction.Arn
+      FunctionName: !GetAtt MyRestFunction.Arn
       Principal: apigateway.amazonaws.com
       SourceArn: !Join
         - ""
