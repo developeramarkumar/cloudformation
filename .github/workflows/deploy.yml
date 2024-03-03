@@ -33,3 +33,9 @@ jobs:
             --stack-name RestLambdaStack \
             --template-file rest-template.yml \
             --capabilities CAPABILITY_IAM
+      - name: Deploy CloudFormation rest-template.yml
+        run: |
+          aws cloudformation deploy \
+            --stack-name MyCodePipelineStack \
+            --template-file codepipeline-template.yml \
+            --capabilities CAPABILITY_IAM
