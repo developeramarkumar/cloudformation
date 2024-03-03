@@ -45,7 +45,7 @@ Resources:
       EndpointConfiguration:
         Types:
           - EDGE
-      Name: simple-rest-endpoint
+      Name: cloudfunction_endpoint
   RestApiDeployment:
     Type: AWS::ApiGateway::Deployment
     DependsOn:
@@ -55,7 +55,7 @@ Resources:
       StageName: dev
 
   # Route 1: GET /hello_world
-  HelloWorldApiGatewayResource:
+  OstroJSApiGatewayResource:
     Type: AWS::ApiGateway::Resource
     Properties:
       ParentId: !GetAtt RestApi.RootResourceId
@@ -81,7 +81,7 @@ Resources:
             - :lambda:path/2015-03-31/functions/
             - !GetAtt MyHttpFunction.Arn
             - /invocations
-      ResourceId: !Ref HelloWorldApiGatewayResource
+      ResourceId: !Ref OstroJSApiGatewayResource
       RestApiId: !Ref RestApi
   MyHttpFunctionApiGatewayPermission:
     Type: AWS::Lambda::Permission
