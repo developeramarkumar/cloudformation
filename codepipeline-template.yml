@@ -1,90 +1,44 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: CodePipeline sample
+AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
-  CodePipelineServiceRole:
+  GitHubToken:
     Type: String
-  ArtifactStoreS3Location:
-    Type: String
-  SourceActionName:
-    Type: String
+    Description: "GitHub personal access token"
+
 Resources:
-  CodePipelineForIntegTest:
-    Type: 'AWS::CodePipeline::Pipeline'
+  MyCodePipeline:
+    Type: AWS::CodePipeline::Pipeline
     Properties:
-      RoleArn: !Ref CodePipelineServiceRole
+      Name: MyCodePipeline
+      RoleArn: <IAM Role ARN for CodePipeline>
       Stages:
         - Name: Source
           Actions:
-            - Name: !Ref SourceActionName
-              InputArtifacts: []
+            - Name: SourceAction
               ActionTypeId:
                 Category: Source
-                Owner: AWS
-                Version: '1'
-                Provider: CodeStarSourceConnection
+                Owner: ThirdParty
+                Provider: GitHub
+                Version: 1
+              Configuration:
+                Owner: <GitHub repo owner>
+                Repo: <GitHub repo name>
+                Branch: main
+                OAuthToken: !Ref GitHubToken
               OutputArtifacts:
                 - Name: SourceOutput
-              Configuration:
-                BranchName: main
-                ConnectionArn: >-
-                  arn:aws:codestar-connections:us-east-1:123456789123:connection/id
-                FullRepositoryId: repo-owner/sample-project
-              RunOrder: 1
-        - Name: Beta
+        - Name: Deploy
           Actions:
-            - Name: BetaAction
+            - Name: DeployAction
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              Configuration:
+                StackName: MyStack
+                ActionMode: CREATE_UPDATE
+                RoleArn: <IAM Role ARN for CloudFormation>
+                TemplatePath: SourceOutput::deploy.yml
+                Capabilities: CAPABILITY_IAM
               InputArtifacts:
                 - Name: SourceOutput
-              ActionTypeId:
-                Category: Build
-                Owner: AWS
-                Provider: CodeBuild
-                Version: '1'
-              Configuration:
-                ProjectName: Sample
-              RunOrder: 1
-      Triggers:
-        - ProviderType: CodeStarSourceConnection
-          GitConfiguration:
-            Push:
-              - Tags:
-                  Excludes:
-                    - beta-*
-                  Includes:
-                    - release-*
-              - Branches:
-                  Excludes:
-                    - beta-*
-                  Includes:
-                    - release-*
-                FilePaths:
-                  Includes:
-                    - projectA/**
-                    - common/**/*.js
-                  Excludes:
-                    - '**/README.md'
-                    - '**/LICENSE'
-                    - '**/CONTRIBUTING.md'
-            PullRequest:
-              - Branches:
-                  Excludes:
-                    - stable-v1-*
-                  Includes:
-                    - stable-*
-                    - release-*
-                FilePaths:
-                  Includes:
-                    - projectA/**
-                    - common/**/*.js
-                  Excludes:
-                    - '**/README.md'
-                    - '**/LICENSE'
-                    - '**/CONTRIBUTING.md'
-                Events:
-                  - CLOSED
-            SourceActionName: !Ref SourceActionName
-      PipelineType: V2
-      ExecutionMode: PARALLEL
-      ArtifactStore:
-        Type: S3
-        Location: !Ref ArtifactStoreS3Location

@@ -20,20 +20,20 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Deploy CloudFormation http-template.yml
-        run: |
-          aws cloudformation deploy \
-            --stack-name HttpLambdaStack \
-            --template-file http-template.yml \
-            --capabilities CAPABILITY_IAM
+      # - name: Deploy CloudFormation http-template.yml
+      #   run: |
+      #     aws cloudformation deploy \
+      #       --stack-name HttpLambdaStack \
+      #       --template-file http-template.yml \
+      #       --capabilities CAPABILITY_IAM
 
-      - name: Deploy CloudFormation rest-template.yml
-        run: |
-          aws cloudformation deploy \
-            --stack-name RestLambdaStack \
-            --template-file rest-template.yml \
-            --capabilities CAPABILITY_IAM
-      - name: Deploy CloudFormation rest-template.yml
+      # - name: Deploy CloudFormation rest-template.yml
+      #   run: |
+      #     aws cloudformation deploy \
+      #       --stack-name RestLambdaStack \
+      #       --template-file rest-template.yml \
+      #       --capabilities CAPABILITY_IAM
+      - name: Deploy CloudFormation codepipeline-template.yml
         run: |
           aws cloudformation deploy \
             --stack-name MyCodePipelineStack \
