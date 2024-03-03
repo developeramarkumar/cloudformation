@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Parameters:
   GitHubToken:
     Type: String
-    Description: "GitHub personal access token"
+    Description: "GitHub personal access token "
 
 Resources:
   MyCodePipeline:
